@@ -174,9 +174,11 @@ class AeatClient {
             $representanteElement->add('sum1:NombreRazon', $this->representative->name);
             $representanteElement->add('sum1:NIF', $this->representative->nif);
         }
-        if ($this->voluntaryRemissionEndDate !== null) {
+        if ($this->voluntaryRemissionEndDate !== null || $this->isVoluntaryRemissionAffectedByIncident) {
             $remisionVoluntariaElement = $cabeceraElement->add('sum1:RemisionVoluntaria');
-            $remisionVoluntariaElement->add('sum1:FechaFinVeriFactu', $this->voluntaryRemissionEndDate->format('d-m-Y'));
+            if ($this->voluntaryRemissionEndDate !== null) {
+                $remisionVoluntariaElement->add('sum1:FechaFinVeriFactu', $this->voluntaryRemissionEndDate->format('d-m-Y'));
+            }
             $remisionVoluntariaElement->add('sum1:Incidencia', $this->isVoluntaryRemissionAffectedByIncident ? 'S' : 'N');
         }
         if ($this->requirementReference !== null) {
