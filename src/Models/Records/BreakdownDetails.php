@@ -167,29 +167,10 @@ class BreakdownDetails extends Model {
             return;
         }
 
-        if ($this->regimeType === RegimeType::C18) {
-            if ($this->surchargeRate === null) {
-                $context->buildViolation('Surcharge rate must be defined for C18 regime type')
-                    ->atPath('surchargeRate')
-                    ->addViolation();
-            }
-            if ($this->surchargeAmount === null) {
-                $context->buildViolation('Surcharge amount must be defined for C18 regime type')
-                    ->atPath('surchargeAmount')
-                    ->addViolation();
-            }
-        } else {
-            if ($this->surchargeRate !== null) {
-                $context->buildViolation('Surcharge rate cannot be defined for non-C18 regime types')
-                    ->atPath('surchargeRate')
-                    ->addViolation();
-            }
-            if ($this->surchargeAmount !== null) {
-                $context->buildViolation('Surcharge amount cannot be defined for non-C18 regime types')
-                    ->atPath('surchargeAmount')
-                    ->addViolation();
-            }
-        }
+        // AEAT v1.2.2 (desde v1.0.7): la restriccion de usar C18 para informar recargo
+        // de equivalencia fue eliminada. El recargo puede declararse bajo cualquier
+        // regimen (ej. 01 general); la validacion de compatibilidad con el tipo de
+        // operacion la cubre validateOperationType.
     }
 
     #[Assert\Callback]
